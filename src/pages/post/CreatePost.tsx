@@ -6,6 +6,7 @@ import * as Publisher from '../../utils/pubsub/publisher';
 import * as Invoker from '../../utils/factory/invoker';
 import SearchRESTObject from '../../rest/rest/search.rest.object';
 import * as RestUtils from '../../rest/RestUtils';
+import * as CommonUtils from '../../utils/common.utils';
 
 export default class CreatePost extends Component {
 
@@ -17,7 +18,8 @@ export default class CreatePost extends Component {
                     {
                         id:'title',
                         type:'input',
-                        label:'Title'
+                        label:'Title',
+                        required:true
                     },
                     {
                         id:'body',
@@ -44,6 +46,11 @@ export default class CreatePost extends Component {
                     post.data.content.title = result.title;
                     post.data.content.body = result.body;
                     post.data.content.tags = result.tags;
+
+                    const {latitude,longitude} = CommonUtils.getLocation();
+
+                    post.data.location.latitude = latitude;
+                    post.data.location.longitude = longitude;
 
                     safePromise(post.create()).then((result)=>{
                         console.log('CreatePost','formSubmit','create','result',result);

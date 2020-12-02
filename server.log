@@ -1,0 +1,352 @@
+
+> isitjustme-react-app@0.1.0 start
+> react-scripts start
+
+[34mℹ[39m [90m｢wds｣[39m: Project is running at http://192.168.1.70/
+[34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
+[34mℹ[39m [90m｢wds｣[39m: Content not from webpack is served from /Users/appleapple/cmpe280/isitjustme-react-app/public
+[34mℹ[39m [90m｢wds｣[39m: 404s will fallback to /
+Starting the development server...
+
+Failed to compile.
+
+/Users/appleapple/cmpe280/isitjustme-react-app/src/components/molecules/preview/PostPreview.tsx
+TypeScript error in /Users/appleapple/cmpe280/isitjustme-react-app/src/components/molecules/preview/PostPreview.tsx(65,45):
+No overload matches this call.
+  Overload 1 of 2, '(props: Readonly<{ tags: { tag: string; count?: number; }[]; }>): MyTags', gave the following error.
+    Type 'string[]' is not assignable to type '{ tag: string; count?: number; }[]'.
+      Type 'string' is not assignable to type '{ tag: string; count?: number; }'.
+  Overload 2 of 2, '(props: { tags: { tag: string; count?: number; }[]; }, context?: any): MyTags', gave the following error.
+    Type 'string[]' is not assignable to type '{ tag: string; count?: number; }[]'.  TS2769
+
+    63 |                                 <Card.Title>{this.props.post.data.content.title}</Card.Title>
+    64 |                                 <Card.Text>
+  > 65 |                                     <MyTags tags={this.props.post.data.content.tags}/>
+       |                                             ^
+    66 |                                     <StatsPreview type='post' {...this.props.post.data.stats}/>
+    67 |                                     <p>Location: {location}</p>
+    68 |                                     <UserProfilePreview {...this.props.post.data.author} small={true}/>
+Compiling...
+Compiled with warnings.
+
+./src/rest/rest/rest.object.ts
+  Line 11:25:  Use 'as T' instead of '<T>'                @typescript-eslint/consistent-type-assertions
+  Line 49:24:  Use 'as Function' instead of '<Function>'  @typescript-eslint/consistent-type-assertions
+
+./src/components/atoms/MyValueComponent.tsx
+  Line 2:10:  'Alert' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/templates/SearchResults.tsx
+  Line 2:10:  'Button' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:18:  'ButtonGroup' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:31:  'Form' is defined but never used         @typescript-eslint/no-unused-vars
+
+./src/pages/post/UpdatePost.tsx
+  Line 2:10:  'config' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 7:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/MyForm.tsx
+  Line 2:14:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/form/TagInput.tsx
+  Line 2:16:  'Row' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:21:  'Col' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:26:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/opinion/CreateOpinion.tsx
+  Line 2:8:  'MyForm' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 3:9:  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/PostPreview.tsx
+  Line 2:9:   'Link' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 3:10:  'Button' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 5:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UserProfile.tsx
+  Line 2:9:  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/CreatePost.tsx
+  Line 3:10:  'ITag' is defined but never used              @typescript-eslint/no-unused-vars
+  Line 3:21:  'Tag' is defined but never used               @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used         @typescript-eslint/no-unused-vars
+  Line 7:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/CommentPreview.tsx
+  Line 3:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 7:10:  'Link' is defined but never used     @typescript-eslint/no-unused-vars
+
+./src/pages/post/DeletePost.tsx
+  Line 3:8:   'Headers' is defined but never used    @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/MyIcon.tsx
+  Line 42:17:  Unreachable code  no-unreachable
+
+./src/pages/post/HomePost.tsx
+  Line 5:10:  'IPost' is defined but never used             @typescript-eslint/no-unused-vars
+  Line 6:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/rest/data/posts/post.ts
+  Line 5:10:  'ITag' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/PostView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/CommentView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UpdateProfile.tsx
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/ReadPost.tsx
+  Line 6:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/comment/ReadComment.tsx
+  Line 6:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+Compiling...
+Compiled with warnings.
+
+./src/rest/rest/rest.object.ts
+  Line 11:25:  Use 'as T' instead of '<T>'                @typescript-eslint/consistent-type-assertions
+  Line 49:24:  Use 'as Function' instead of '<Function>'  @typescript-eslint/consistent-type-assertions
+
+./src/components/atoms/MyValueComponent.tsx
+  Line 2:10:  'Alert' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/templates/SearchResults.tsx
+  Line 2:10:  'Button' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:18:  'ButtonGroup' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:31:  'Form' is defined but never used         @typescript-eslint/no-unused-vars
+
+./src/pages/post/UpdatePost.tsx
+  Line 2:10:  'config' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 7:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/MyForm.tsx
+  Line 2:14:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/form/TagInput.tsx
+  Line 2:16:  'Row' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:21:  'Col' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:26:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/opinion/CreateOpinion.tsx
+  Line 2:8:  'MyForm' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 3:9:  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/PostPreview.tsx
+  Line 2:9:   'Link' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 3:10:  'Button' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 5:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UserProfile.tsx
+  Line 2:9:  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/CreatePost.tsx
+  Line 3:10:  'ITag' is defined but never used              @typescript-eslint/no-unused-vars
+  Line 3:21:  'Tag' is defined but never used               @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used         @typescript-eslint/no-unused-vars
+  Line 7:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/CommentPreview.tsx
+  Line 3:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 7:10:  'Link' is defined but never used     @typescript-eslint/no-unused-vars
+
+./src/pages/post/DeletePost.tsx
+  Line 3:8:   'Headers' is defined but never used    @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/MyIcon.tsx
+  Line 42:17:  Unreachable code  no-unreachable
+
+./src/pages/post/HomePost.tsx
+  Line 5:10:  'IPost' is defined but never used             @typescript-eslint/no-unused-vars
+  Line 6:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/rest/data/posts/post.ts
+  Line 5:10:  'ITag' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/PostView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/CommentView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UpdateProfile.tsx
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/ReadPost.tsx
+  Line 6:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/comment/ReadComment.tsx
+  Line 6:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+Compiling...
+Compiled with warnings.
+
+./src/rest/rest/rest.object.ts
+  Line 11:25:  Use 'as T' instead of '<T>'                @typescript-eslint/consistent-type-assertions
+  Line 49:24:  Use 'as Function' instead of '<Function>'  @typescript-eslint/consistent-type-assertions
+
+./src/components/atoms/MyValueComponent.tsx
+  Line 2:10:  'Alert' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/templates/SearchResults.tsx
+  Line 2:10:  'Button' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:18:  'ButtonGroup' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:31:  'Form' is defined but never used         @typescript-eslint/no-unused-vars
+
+./src/pages/post/UpdatePost.tsx
+  Line 2:10:  'config' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 7:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/MyForm.tsx
+  Line 2:14:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/form/TagInput.tsx
+  Line 2:16:  'Row' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:21:  'Col' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:26:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/opinion/CreateOpinion.tsx
+  Line 2:8:  'MyForm' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 3:9:  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/PostPreview.tsx
+  Line 2:9:   'Link' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 3:10:  'Button' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 5:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UserProfile.tsx
+  Line 2:9:  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/CreatePost.tsx
+  Line 3:10:  'ITag' is defined but never used              @typescript-eslint/no-unused-vars
+  Line 3:21:  'Tag' is defined but never used               @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used         @typescript-eslint/no-unused-vars
+  Line 7:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/CommentPreview.tsx
+  Line 3:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 7:10:  'Link' is defined but never used     @typescript-eslint/no-unused-vars
+
+./src/pages/post/DeletePost.tsx
+  Line 3:8:   'Headers' is defined but never used    @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/MyIcon.tsx
+  Line 42:17:  Unreachable code  no-unreachable
+
+./src/pages/post/HomePost.tsx
+  Line 5:10:  'IPost' is defined but never used             @typescript-eslint/no-unused-vars
+  Line 6:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/rest/data/posts/post.ts
+  Line 5:10:  'ITag' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/PostView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/CommentView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UpdateProfile.tsx
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/ReadPost.tsx
+  Line 6:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/comment/ReadComment.tsx
+  Line 6:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+Compiling...
+Compiled with warnings.
+
+./src/rest/rest/rest.object.ts
+  Line 11:25:  Use 'as T' instead of '<T>'                @typescript-eslint/consistent-type-assertions
+  Line 49:24:  Use 'as Function' instead of '<Function>'  @typescript-eslint/consistent-type-assertions
+
+./src/components/atoms/MyValueComponent.tsx
+  Line 2:10:  'Alert' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/templates/SearchResults.tsx
+  Line 2:10:  'Button' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:18:  'ButtonGroup' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:31:  'Form' is defined but never used         @typescript-eslint/no-unused-vars
+
+./src/pages/post/UpdatePost.tsx
+  Line 2:10:  'config' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 7:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/MyForm.tsx
+  Line 2:14:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/form/TagInput.tsx
+  Line 2:16:  'Row' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:21:  'Col' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:26:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/opinion/CreateOpinion.tsx
+  Line 2:8:  'MyForm' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 3:9:  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/PostPreview.tsx
+  Line 2:9:   'Link' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 3:10:  'Button' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 5:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UserProfile.tsx
+  Line 2:9:  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/CreatePost.tsx
+  Line 3:10:  'ITag' is defined but never used              @typescript-eslint/no-unused-vars
+  Line 3:21:  'Tag' is defined but never used               @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used         @typescript-eslint/no-unused-vars
+  Line 7:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/preview/CommentPreview.tsx
+  Line 3:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 7:10:  'Link' is defined but never used     @typescript-eslint/no-unused-vars
+
+./src/pages/post/DeletePost.tsx
+  Line 3:8:   'Headers' is defined but never used    @typescript-eslint/no-unused-vars
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/atoms/MyIcon.tsx
+  Line 42:17:  Unreachable code  no-unreachable
+
+./src/pages/post/HomePost.tsx
+  Line 5:10:  'IPost' is defined but never used             @typescript-eslint/no-unused-vars
+  Line 6:8:   'SearchRESTObject' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/rest/data/posts/post.ts
+  Line 5:10:  'ITag' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/PostView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/components/molecules/fullview/CommentView.tsx
+  Line 5:13:  'Invoker' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/user/UpdateProfile.tsx
+  Line 5:13:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/post/ReadPost.tsx
+  Line 6:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+./src/pages/comment/ReadComment.tsx
+  Line 6:10:  'Publisher' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+

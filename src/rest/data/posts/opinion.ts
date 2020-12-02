@@ -49,11 +49,13 @@ class Opinion extends RESTObject<IOpinion>{
 
         this.overloadables.creationPacket = () => {
             let extras:any = {};
-            if(this.data.location.raw){
-                extras.location = {
-                    latitude:this.data.location.latitude||0.0,
-                    longitude:this.data.location.longitude||0.0,
-                    raw:this.data.location.raw
+            if(this.data.location.latitude){
+                extras = {
+                    location:{
+                        latitude:this.data.location.latitude,
+                        longitude:this.data.location.longitude,
+                        raw:this.data.location.raw
+                    }
                 };
             }
             if(this.data.body){

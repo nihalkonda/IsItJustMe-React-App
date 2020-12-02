@@ -31,6 +31,9 @@ export default class ToastPanel extends Component{
 
     componentDidMount(){
         factory.bindFunction(binderKey.CREATE_TOAST,this.addToast);
+        window.addEventListener('scroll',()=>{
+            this.setState({scrollY:window.scrollY});
+        })
     }
 
     render() {

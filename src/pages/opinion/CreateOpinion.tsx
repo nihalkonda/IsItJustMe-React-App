@@ -9,6 +9,7 @@ import headers from '../../rest/rest/headers';
 import { Button } from 'react-bootstrap';
 import safePromise from '../../rest/rest/safe.promise';
 import MyContainer from '../../components/atoms/MyContainer';
+import * as CommonUtils from '../../utils/common.utils';
 
 export default class CreateOpinion extends Component<{
     postId:string,
@@ -48,6 +49,12 @@ export default class CreateOpinion extends Component<{
         this.opinion.data.body='';
         this.opinion.data._id='';
         this.opinion.data.opinionType = opinionType;
+
+        const {latitude,longitude} = CommonUtils.getLocation();
+
+        this.opinion.data.location.latitude = latitude;
+        this.opinion.data.location.longitude = longitude;
+
         safePromise(this.opinion.create()).then(()=>{
             Invoker.createToast('Opinion Created','');
             Publisher.opinionCreated();

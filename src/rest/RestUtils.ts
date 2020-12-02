@@ -9,6 +9,7 @@ const liveTagSuggestions = (text,callback) => {
         tagSearch.request.sort = {
             "count":-1
         };
+        tagSearch.request.attributes=['tag'];
     }
 
     tagSearch.request.query={"tag" : {$regex : `.*${text}.*`}};

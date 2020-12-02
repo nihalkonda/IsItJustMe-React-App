@@ -4,6 +4,7 @@ import RESTObject from '../../rest/rest.object';
 interface ITag{
     _id?:string;
     tag:string;
+    type?:string;
     count?:number;
 }
 
@@ -15,6 +16,7 @@ class Tag extends RESTObject<ITag>{
             this.setData({
                 _id:'',
                 tag:'',
+                type:'',
                 count:0
             });
         };

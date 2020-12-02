@@ -64,7 +64,7 @@ class Comment extends RESTObject<IComment>{
 
         this.overloadables.creationPacket = () => {
             let extras = {};
-            if(this.data.location.raw){
+            if(this.data.location.latitude){
                 extras = {
                     location:{
                         latitude:this.data.location.latitude||0.0,

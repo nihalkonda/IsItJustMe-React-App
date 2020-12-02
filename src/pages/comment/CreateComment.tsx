@@ -5,6 +5,7 @@ import { Publisher } from '../../utils/pubsub';
 import * as Invoker from '../../utils/factory/invoker';
 import { Comment } from '../../rest/data/posts';
 import safePromise from '../../rest/rest/safe.promise';
+import * as CommonUtils from '../../utils/common.utils';
 
 export default class CreateComment extends Component<{
     postId:string,
@@ -51,9 +52,20 @@ export default class CreateComment extends Component<{
 
                     const comment = new Comment();
 
-                    comment.data.content = result.content;
+                    comment.data.content = result.content||'';
+
+                    if(CommonUtils.stripHtml(comment.data.content).trim().length===0){
+                        Invoker.createToast('Comment Creation Failed','Cannot create a empty comment.');
+                        return;
+                    }
+
                     comment.data.context = result.context;
                     comment.data.postId = this.props.postId;
+
+                    const {latitude,longitude} = CommonUtils.getLocation();
+
+                    comment.data.location.latitude = latitude;
+                    comment.data.location.longitude = longitude;
 
                     safePromise(comment.create()).then((result)=>{
                         console.log('CreateComment','formSubmit','create','result',result);

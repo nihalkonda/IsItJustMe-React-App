@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import { Button } from 'react-bootstrap'
-import { Post } from '../../../rest/data/posts'
+import { ITag, Post } from '../../../rest/data/posts'
 import * as Invoker from '../../../utils/factory/invoker'
 import MyRichTextContainer from '../../atoms/MyRichTextContainer'
 import MyTags from '../MyTags'
@@ -30,7 +30,7 @@ export default class PostView extends Component<{
                 <h4>{this.props.post.data.content.title}</h4>
                 <hr/>
                 <MyRichTextContainer html={this.props.post.data.content.body}/>
-                <MyTags tags={this.props.post.data.content.tags}/>
+                <MyTags tags={this.props.post.data.content.tags as ITag[]}/>
                 <StatsPreview type='post' {...this.props.post.data.stats}/>
                 <p>Location: {location}</p>
                 <UserProfilePreview {...this.props.post.data.author}/>

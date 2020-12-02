@@ -11,13 +11,16 @@ export default class SimpleInput extends Component<config> {
         }
 
         return (
-            <Form.Group controlId={this.props.id}>
+            <Form.Group style={{
+                maxWidth:600
+            }} controlId={this.props.id}>
                 <Form.Label>{this.props.label}</Form.Label>
                 <Form.Control 
                     style={{maxWidth:600}} 
                     {...attrs}
                     placeholder={this.props.placeholder} 
                     defaultValue={this.props.defaultValue} 
+                    required={this.props.required||false}
                     onChange={(event)=>{
                         this.props.valueChanged(this.props.id,event.target.value);
                     }}

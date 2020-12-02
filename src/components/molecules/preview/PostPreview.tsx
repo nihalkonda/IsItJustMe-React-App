@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import { Button, Card, Col, Row } from 'react-bootstrap'
-import { Post } from '../../../rest/data/posts'
+import { ITag, Post } from '../../../rest/data/posts'
 import { Publisher } from '../../../utils/pubsub'
 import StatsPreview from '../preview/StatsPreview'
 import UserProfilePreview from '../preview/UserProfilePreview'
 import MyTags from '../MyTags';
 import MyValueComponent from '../../atoms/MyValueComponent';
+import MyCard from '../../atoms/MyCard';
 
 export default class PostPreview extends Component<{
     post:Post
@@ -24,10 +25,9 @@ export default class PostPreview extends Component<{
 
         return (
             <div>
-                <Card style={{color:'initial',textDecoration:'initial'}} as={Link} onClick={(event)=>{
-                    event.stopPropagation();
-                    // Publisher.redirectToURL('/post/'+this.props.post.data._id);
-                }} to={'/post/'+this.props.post.data._id}>
+                <MyCard isLink to={'/post/'+this.props.post.data._id} style={{
+                    minWidth:700
+                }}>
                     <Card.Body>
                         <Row>
                             <Col xs='auto'>
@@ -64,7 +64,7 @@ export default class PostPreview extends Component<{
                             <Col>
                                 <Card.Title>{this.props.post.data.content.title}</Card.Title>
                                 <Card.Text>
-                                    <MyTags tags={this.props.post.data.content.tags}/>
+                                    <MyTags tags={this.props.post.data.content.tags as ITag[]}/>
                                     <StatsPreview type='post' {...this.props.post.data.stats}/>
                                     <p>Location: {location}</p>
                                     <UserProfilePreview {...this.props.post.data.author} small={true}/>
@@ -72,7 +72,7 @@ export default class PostPreview extends Component<{
                             </Col>
                         </Row>
                     </Card.Body>
-                </Card>
+                </MyCard>
                 <br/>
             </div>
         )

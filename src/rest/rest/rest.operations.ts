@@ -2,6 +2,7 @@ import axios from 'axios';
 import Headers from './headers';
 import Factory from '../../utils/factory';
 import Strings from '../../utils/Strings';
+import safePromise from './safe.promise';
 
 const restOptions = function(refresh:boolean=false){
     let auth = 'Access '+Headers.getAccessToken().value;
@@ -34,6 +35,7 @@ function deconstructError(error){
         name = error.name;
         message = error.message;
     }
+    console.log({name,message})
     return {name,message};
 }
 
@@ -59,10 +61,10 @@ const httpOp = async function(method:string='get',url:string,data:any,refresh:bo
             }
 
             if(name === '403'){
-                if(error.response.data.errorCode === 'ACCESS_TOKEN_EXPIRED'){
+                if(error.response.data.errorCode === Strings.ERROR.CODE.ACCESS_TOKEN_EXPIRED){
                     try {
                         console.log('Factory','boundFunction','AUTH_GET_ACCESS_TOKEN',Factory.boundFunction('AUTH_GET_ACCESS_TOKEN'))
-                        await (Factory.boundFunction('AUTH_GET_ACCESS_TOKEN')());
+                        await safePromise(Factory.boundFunction('AUTH_GET_ACCESS_TOKEN')());
                         continue;
                     } catch (error) {
                         console.log('error',error,error.name,error.message);
@@ -75,8 +77,6 @@ const httpOp = async function(method:string='get',url:string,data:any,refresh:bo
     
                         throwError(name,message);
                     }
-                }else if(error.response.data.errorCode === 'REFRESH_TOKEN_EXPIRED'){
-                    throwError('403',Strings.ERROR.REFRESH_TOKEN_EXPIRED);
                 }else{
                     throwError(name,message);
                 }

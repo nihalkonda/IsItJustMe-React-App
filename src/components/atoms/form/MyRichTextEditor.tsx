@@ -34,6 +34,9 @@ export default class MyRichTextEditor extends Component<config> {
                 <Form.Group controlId={this.props.id}>
                     <Form.Label>{this.props.label}</Form.Label>
                     <ReactQuillEditor 
+                        style={{
+                            maxWidth:600
+                        }}
                         ref={(el)=>{
                             this.quill = el; console.log(this.quill)
                         }} 

@@ -47,7 +47,8 @@ export default class UpdatePost extends Component<{
                         id:'title',
                         type:'input',
                         label:'Title',
-                        defaultValue:this.post.data.content.title
+                        defaultValue:this.post.data.content.title,
+                        required:true
                     },
                     {
                         id:'body',

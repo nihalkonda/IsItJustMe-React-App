@@ -72,10 +72,11 @@ export default class SearchResults extends Component<{
                 items = this.searchRestObject.response.result as Tag[];
         }
 
-        let title = `No ${this.props.itemType}s.`;
+        let title = `No ${this.props.itemType}s found.`;
 
         if(this.searchRestObject.response.resultSize > 0){
-            title = `Displaying ${this.searchRestObject.response.resultSize} of ${this.searchRestObject.response.resultTotalSize} results`;
+            let base = ((this.searchRestObject.response.pageNum - 1) * this.searchRestObject.response.pageSize);
+            title = `Displaying ${base+1} to ${base + this.searchRestObject.response.resultSize} of ${this.searchRestObject.response.resultTotalSize} results`;
         }
 
         const basicGroups = (value) => {
@@ -110,7 +111,7 @@ export default class SearchResults extends Component<{
                         </Nav.Item>))
                     }
                 </Nav>
-                <h6>{title}</h6>
+                <h6 style={{margin:'10px 0px'}}>{title}</h6>
                 <ItemList itemType={this.props.itemType} items={items} />
                 <MyPagination totalPageCount={this.searchRestObject.response.pageCount} selectedPage={this.searchRestObject.response.pageNum} pageSelected={(pageNum:number)=>{
                     console.log('pageNum',pageNum);

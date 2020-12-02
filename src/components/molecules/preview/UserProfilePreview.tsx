@@ -14,7 +14,7 @@ export default class UserProfilePreview extends Component<{
 }> {
     render() {
         if(this.props.small){
-            return <Link to={'/user/'+this.props.userId}>{`${this.props.firstName} ${this.props.lastName}`}</Link>
+            return <Link to={'/user/'+this.props.userId} onClick={(event)=>{event.stopPropagation();}}>{`${this.props.firstName} ${this.props.lastName}`}</Link>
         }
         return (
             <div>

@@ -15,17 +15,20 @@ export default class SignUp extends Component {
                         id:'email',
                         type:'email',
                         label:'Email',
-                        description:'This email is used for confirmation'
+                        description:'This email is used for confirmation',
+                        required:true
                     },
                     {
                         id:'password',
                         type:'password',
-                        label:'Password'
+                        label:'Password',
+                        required:true
                     },
                     {
                         id:'firstName',
                         type:'input',
-                        label:'First Name'
+                        label:'First Name',
+                        required:true
                     },
                     {
                         id:'lastName',

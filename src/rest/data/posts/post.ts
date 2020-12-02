@@ -10,7 +10,7 @@ interface IPost{
     content:{
         title:string,
         body:string,
-        tags:string[]
+        tags:ITag[]|string[]
     };
     isDeleted:boolean;
     location:ILocation;
@@ -71,11 +71,11 @@ class Post extends RESTObject<IPost>{
 
         this.overloadables.creationPacket = () => {
             let extras = {};
-            if(this.data.location.raw){
+            if(this.data.location.latitude){
                 extras = {
                     location:{
-                        latitude:this.data.location.latitude||0.0,
-                        longitude:this.data.location.longitude||0.0,
+                        latitude:this.data.location.latitude,
+                        longitude:this.data.location.longitude,
                         raw:this.data.location.raw
                     }
                 };

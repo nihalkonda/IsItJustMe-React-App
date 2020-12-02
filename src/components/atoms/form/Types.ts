@@ -6,6 +6,7 @@ interface config {
     description?:string,
     inline?:boolean,
     isTextarea?:boolean,
+    required?:boolean,
     defaultValue?:any,
     valueChanged?:Function,
     liveSuggestions?:Function,
