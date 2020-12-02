@@ -17,6 +17,7 @@ export default class HomeTag extends Component {
         this.searchRestObject.request.sort={
             "count":-1
         };
+        this.searchRestObject.request.pageSize=-5497;
         this.searchRestObject.search().then(()=>{
             this.setState({loaded:new Date().getTime()});
         }).catch(()=>{
