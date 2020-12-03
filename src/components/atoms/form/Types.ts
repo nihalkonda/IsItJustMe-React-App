@@ -8,6 +8,7 @@ interface config {
     isTextarea?:boolean,
     required?:boolean,
     defaultValue?:any,
+    valueList?:any[]
     valueChanged?:Function,
     liveSuggestions?:Function,
     formButtonClicked?:Function

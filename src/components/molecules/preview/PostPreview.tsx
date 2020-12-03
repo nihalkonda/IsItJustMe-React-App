@@ -8,20 +8,13 @@ import UserProfilePreview from '../preview/UserProfilePreview'
 import MyTags from '../MyTags';
 import MyValueComponent from '../../atoms/MyValueComponent';
 import MyCard from '../../atoms/MyCard';
+import MyAddressText from '../../atoms/MyAddressText';
 
 export default class PostPreview extends Component<{
     post:Post
 }> {
 
     render() {
-
-        let location = '';
-
-        try {
-            location = `${this.props.post.data.location.raw.city}, ${this.props.post.data.location.raw.region}, ${this.props.post.data.location.raw.country}`;
-        } catch (error) {
-            
-        }
 
         return (
             <div>
@@ -66,7 +59,7 @@ export default class PostPreview extends Component<{
                                 <Card.Text>
                                     <MyTags tags={this.props.post.data.content.tags as ITag[]}/>
                                     <StatsPreview type='post' {...this.props.post.data.stats}/>
-                                    <p>Location: {location}</p>
+                                    <p>Location: <MyAddressText location={this.props.post.data.location}/></p>
                                     <UserProfilePreview {...this.props.post.data.author} small={true}/>
                                 </Card.Text>
                             </Col>

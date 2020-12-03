@@ -3,12 +3,14 @@ import { Button, ButtonGroup, Form, Nav } from 'react-bootstrap';
 import { Post, Comment, Tag, IPost, IComment, ITag } from '../../rest/data/posts';
 import safePromise from '../../rest/rest/safe.promise';
 import SearchRESTObject from '../../rest/rest/search.rest.object';
+import MyButtonGroup from '../atoms/form/MyButtonGroup';
 import MyPagination from '../atoms/MyPagination'
 import ItemList from '../organisms/ItemList'
 
 export default class SearchResults extends Component<{
     itemType:string,
     item:Post|Comment|Tag,
+    quickFilters?:{label:string,filter:any}[],
     [key:string]:any
 }> {
     state = {
@@ -23,6 +25,14 @@ export default class SearchResults extends Component<{
             case 'comment': return new SearchRESTObject<IComment>(this.props.item as Comment);
             default: return new SearchRESTObject<ITag>(this.props.item as Tag);
         }
+    }
+
+    applyFilter(value){
+        this.searchRestObject.request.query=value.query;
+        this.searchRestObject.request.sort=value.sort;
+        this.searchRestObject.request.pageNum=1;
+        this.performSearch();
+        return true;
     }
 
     performSearch(){
@@ -79,29 +89,29 @@ export default class SearchResults extends Component<{
             title = `Displaying ${base+1} to ${base + this.searchRestObject.response.resultSize} of ${this.searchRestObject.response.resultTotalSize} results`;
         }
 
-        const basicGroups = (value) => {
-            let query = {};
-            switch(value){
-                case 1:
-                    query["context"] = "resolve";
-                    break;
-                case 2:
-                    query["context"] = "update";
-            }
-            this.searchRestObject.request.sort={
-                "lastModifiedAt":-1
-            };
-            this.searchRestObject.request.query={
-                "isDeleted":false,
-                ...query
-            }
-            this.performSearch()
-        }
+        // const basicGroups = (value) => {
+        //     let query = {};
+        //     switch(value){
+        //         case 1:
+        //             query["context"] = "resolve";
+        //             break;
+        //         case 2:
+        //             query["context"] = "update";
+        //     }
+        //     this.searchRestObject.request.sort={
+        //         "lastModifiedAt":-1
+        //     };
+        //     this.searchRestObject.request.query={
+        //         "isDeleted":false,
+        //         ...query
+        //     }
+        //     this.performSearch()
+        // }
 
         return (
             <div>
                 
-                <Nav variant="tabs" defaultActiveKey="0" onSelect={(eventKey)=>{
+                {/* <Nav variant="tabs" defaultActiveKey="0" onSelect={(eventKey)=>{
                     console.log(eventKey);
                     basicGroups(parseInt(eventKey));
                 }}>
@@ -110,7 +120,16 @@ export default class SearchResults extends Component<{
                             <Nav.Link eventKey={e.value} >{e.label}</Nav.Link>
                         </Nav.Item>))
                     }
-                </Nav>
+                </Nav> */}
+
+                {/* {
+                    this.props.quickFilters && this.applyFilter(this.props.quickFilters[0]) &&
+                    <MyButtonGroup id='' type=''
+                        valueList={this.props.quickFilters.map(({label,filter})=>{return {label,value:filter}})}
+                        valueChanged={(filter)=>{
+                            this.applyFilter(filter);
+                        }}/>
+                } */}
                 <h6 style={{margin:'10px 0px'}}>{title}</h6>
                 <ItemList itemType={this.props.itemType} items={items} />
                 <MyPagination totalPageCount={this.searchRestObject.response.pageCount} selectedPage={this.searchRestObject.response.pageNum} pageSelected={(pageNum:number)=>{

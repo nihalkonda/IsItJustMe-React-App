@@ -81,7 +81,7 @@ export default class ReadComment extends Component<{
                 <br/>
                 <br/>
                 <CommentView comment={this.comment} authorView={isCommentAuthor}/>
-                <CreateOpinion postId={this.comment.data.postId} commentId={this.comment.data._id} postAuthorView={isPostAuthor}/>
+                <CreateOpinion postId={this.comment.data.postId} commentId={this.comment.data._id} postAuthorView={isPostAuthor} />
             </div>
         )
     }

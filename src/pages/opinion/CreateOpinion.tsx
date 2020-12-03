@@ -125,6 +125,8 @@ export default class CreateOpinion extends Component<{
             buttons[_opinion.data.opinionType]._id = _opinion.data._id;
         })
 
+        
+
         return (
         <div>
             <br/>

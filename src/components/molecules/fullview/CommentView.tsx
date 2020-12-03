@@ -6,6 +6,7 @@ import * as Invoker from '../../../utils/factory/invoker'
 import MyRichTextContainer from '../../atoms/MyRichTextContainer'
 import StatsPreview from '../preview/StatsPreview'
 import UserProfilePreview from '../preview/UserProfilePreview'
+import MyAddressText from '../../atoms/MyAddressText';
 
 export default class CommentView extends Component<{
     comment:Comment,
@@ -15,14 +16,6 @@ export default class CommentView extends Component<{
     render() {
 
         const comment = this.props.comment;
-
-        let location = '';
-
-        try {
-            location = `${comment.data.location.raw.city}, ${comment.data.location.raw.region}, ${comment.data.location.raw.country}`;
-        } catch (error) {
-            
-        }
 
         let extraPanel = <span></span>;
 
@@ -59,7 +52,7 @@ export default class CommentView extends Component<{
                         Location
                     </th>
                     <td>
-                        {location}
+                        <MyAddressText location={this.props.comment.data.location}/>
                     </td>
                 </tr>
                 <tr>

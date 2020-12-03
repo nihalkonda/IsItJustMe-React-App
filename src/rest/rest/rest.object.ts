@@ -72,7 +72,7 @@ export default class RESTObject<T>{
     copyJSON(target:T,source:object){
         //console.log(target,source);
         for(const k of Object.keys(source)){
-            target[k] = (source[k].constructor.name === 'Object') ? this.copyJSON(target[k]||{},source[k]) : source[k];
+            target[k] = ((source[k] !== null) && (source[k] !== undefined) && source[k].constructor.name === 'Object') ? this.copyJSON(target[k]||{},source[k]) : source[k];
         }
         return target;
     }

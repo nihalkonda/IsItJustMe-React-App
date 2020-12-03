@@ -6,14 +6,16 @@ import SearchResults from '../../components/templates/SearchResults';
 import { Button } from 'react-bootstrap';
 import CreateComment from '../comment/CreateComment';
 import { PubSub, Subscriber, Topic } from '../../utils/pubsub';
-import CreateOpinion from '../opinion/CreateOpinion';
+//import CreateOpinion from '../opinion/CreateOpinion';
 import safePromise from '../../rest/rest/safe.promise';
+import CreateOpinion from '../opinion/CreateOpinion';
 
 export default class ReadPost extends Component<{
     [key:string]:any
 }> implements Subscriber{
     state = {
-        loaded:0
+        loaded:0,
+        opinionButtons:{}
     };
 
     post:Post;
@@ -25,6 +27,7 @@ export default class ReadPost extends Component<{
         safePromise(this.post.read(true)).then((result)=>{
             console.log('Post','Read','result',result);
             this.setState({loaded:new Date().getTime()});
+            
         }).catch((err)=>{
             console.log('Post','Read','err',err);
         }) 
@@ -53,11 +56,47 @@ export default class ReadPost extends Component<{
         comment.data.postId = this.post.data._id;
         return (
             <div>
-                <PostView post={this.post} authorView={isPostAuthor}/>
+                <PostView post={this.post} authorView={isPostAuthor} />
                 <CreateOpinion postId={this.post.data._id} postAuthorView={isPostAuthor}/>
                 <CreateComment postId={this.post.data._id} postAuthorView={isPostAuthor}/>
                 <h3>Comments</h3>
-                <SearchResults itemType='comment' item={comment} loaded={this.state.loaded}/>
+                <SearchResults itemType='comment' item={comment} loaded={this.state.loaded} quickFilters={[
+                    {
+                        label:'Latest',
+                        filter:{
+                            query:{
+                                'isDeleted':false
+                            },
+                            sort:{
+                                'lastModifiedAt':-1
+                            }
+                        }
+                    },
+                    {
+                        label:'Updates',
+                        filter:{
+                            query:{
+                                'isDeleted':false,
+                                'context':'update'
+                            },
+                            sort:{
+                                'lastModifiedAt':-1
+                            }
+                        }
+                    },
+                    {
+                        label:'Answers',
+                        filter:{
+                            query:{
+                                'isDeleted':false,
+                                'context':'resolve'
+                            },
+                            sort:{
+                                'lastModifiedAt':-1
+                            }
+                        }
+                    }
+                ]}/>
             </div>
         )
     }
