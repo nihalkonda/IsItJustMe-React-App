@@ -18,6 +18,7 @@ export default class SimpleInput extends Component<config> {
                 <Form.Control 
                     style={{maxWidth:600}} 
                     {...attrs}
+                    id={this.props.id}
                     placeholder={this.props.placeholder} 
                     defaultValue={this.props.defaultValue} 
                     required={this.props.required||false}

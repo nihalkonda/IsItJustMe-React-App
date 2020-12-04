@@ -67,6 +67,7 @@ export default class TagInput extends Component<config> {
                     <Form.Control
                         style={{ maxWidth: 600 }}
                         type={this.props.type}
+                        id={this.props.id}
                         list={this.props.id}
                         defaultValue={this.state.value || ''}
                         value={this.state.value || ''}
