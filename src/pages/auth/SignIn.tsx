@@ -16,14 +16,12 @@ export default class SignIn extends Component {
                         id:'email',
                         type:'email',
                         label:'Email',
-                        defaultValue:'nihal+test2@isitjustme.info',
                         required:true
                     },
                     {
                         id:'password',
                         type:'password',
                         label:'Password',
-                        defaultValue:'strong',
                         required:true
                     },
                     {

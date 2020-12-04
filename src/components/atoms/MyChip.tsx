@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import MyIcon from './MyIcon';
 import {Link} from 'react-router-dom';
-import { ITag } from '../../rest/data/posts';
+import { ITag, Tag } from '../../rest/data/posts';
 
 export default class MyChip extends Component<{
     tag:ITag,
@@ -14,12 +14,12 @@ export default class MyChip extends Component<{
 
         if (this.props.onDelete) {
             tds.push(
-                <td {...{ valign: 'middle' }}
+                <td {...{ valign: 'middle' }} id={this.props.tag.tag}
                     onClick={(event) => {
                         console.log('tag', 'delete', this.props.tag.tag);
                         this.props.onDelete(this.props.tag.tag);
                     }}>
-                    <MyIcon type='close' />
+                    <MyIcon type='close'  />
                 </td>
             );
         }
