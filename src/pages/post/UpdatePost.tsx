@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { config } from '../../components/atoms/form/Types';
 import MyForm from '../../components/molecules/MyForm';
-import { Post } from '../../rest/data/posts';
+import { ITag, Post } from '../../rest/data/posts';
 import headers from '../../rest/rest/headers';
 import safePromise from '../../rest/rest/safe.promise';
 import * as Publisher from '../../utils/pubsub/publisher';
@@ -59,7 +59,13 @@ export default class UpdatePost extends Component<{
                     {
                         id:'tags',
                         type:'tag',
-                        defaultValue:this.post.data.content.tags,
+                        defaultValue:(this.post.data.content.tags as any[]).map((t)=>{
+                            if(t.constructor === ''.constructor){
+                                return t;
+                            }else{
+                                return t.tag;
+                            }
+                        }),
                         liveSuggestions:(value,callback)=>{
                             RestUtils.liveTagSuggestions(value,callback);
                         }
