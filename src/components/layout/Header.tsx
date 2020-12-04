@@ -24,7 +24,7 @@ export default class Header extends Component implements Subscriber{
     render() {
         type link={name:string,url:string};
         let links:link[] = [
-            {name:"Home",url:"/"},
+            //{name:"Home",url:"/"},
             {name:"Posts",url:"/post"},
             {name:"Tags",url:"/tag"},
             {name:"About Us",url:"/about_us"},

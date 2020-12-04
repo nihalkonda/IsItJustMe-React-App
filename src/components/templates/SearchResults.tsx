@@ -11,11 +11,14 @@ export default class SearchResults extends Component<{
     itemType:string,
     item:Post|Comment|Tag,
     quickFilters?:{label:string,filter:any}[],
+    callback?:any,
     [key:string]:any
 }> {
     state = {
         loaded:0
     };
+
+    oldFilterLabel;
 
     searchRestObject:SearchRESTObject<IPost|IComment|ITag>;
 
@@ -27,12 +30,21 @@ export default class SearchResults extends Component<{
         }
     }
 
-    applyFilter(value){
+    rerunFilter(){
+        let label = this.oldFilterLabel || this.props.quickFilters[0].label;
+        this.applyFilter((this.props.quickFilters.filter(qf=>qf.label===label))[0].filter,label);
+    }
+
+    applyFilter(value,label){
+        //alert(value);
         if(!this.searchRestObject)
             this.searchRestObject = this.getSearchRestObject(this.props.itemType);
+        if(!value)
+            return false;
         this.searchRestObject.request.query=value.query;
         this.searchRestObject.request.sort=value.sort;
         this.searchRestObject.request.pageNum=1;
+        this.oldFilterLabel = label;
         this.performSearch();
         return true;
     }
@@ -59,7 +71,7 @@ export default class SearchResults extends Component<{
     }
 
     componentDidMount(){
-        this.reload();
+       this.reload();
     }
 
     componentWillReceiveProps(){
@@ -128,10 +140,10 @@ export default class SearchResults extends Component<{
                     this.props.quickFilters && 
                     <MyButtonGroup id='' type='' defaultValue={this.props.quickFilters[0]}
                         valueList={this.props.quickFilters.map(({label,filter})=>{return {label,value:filter}})}
-                        valueChanged={(filter)=>{
+                        valueChanged={(filter,label)=>{
                             //alert(JSON.stringify(filter));
                             if(filter)
-                            this.applyFilter(filter);
+                                this.applyFilter(filter,label);
                         }}/>
                 }
                 <h6 style={{margin:'10px 0px'}}>{title}</h6>

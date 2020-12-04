@@ -30,7 +30,7 @@ export default class MyButtonGroup extends Component<config> {
                             this.setState({
                                 selectedButton: {label,value}
                             }, () => {
-                                this.props.valueChanged(value)
+                                this.props.valueChanged(value,label)
                             })
                     }} variant={label === this.state.selectedButton.label ? "primary" : "outline-primary"} 
                     style={{

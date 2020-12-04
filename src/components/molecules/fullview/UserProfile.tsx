@@ -3,6 +3,8 @@ import MyImage from '../../atoms/MyImage';
 import {Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import headers from '../../../rest/rest/headers';
+import SearchResults from '../../templates/SearchResults';
+import {Post} from '../../../rest/data/posts';
 
 export default class UserProfile extends Component<{
     firstName:string,
@@ -34,6 +36,23 @@ export default class UserProfile extends Component<{
                 {
                     extraPanel
                 }
+                <hr/>
+                <SearchResults itemType='post' item={new Post()}
+                    quickFilters={[
+                        {
+                            label: 'Posts',
+                            filter: {
+                                sort: {
+                                    "createdAt": -1
+                                },
+                                query: {
+                                    "isDeleted": false,
+                                    "author":this.props.userId
+                                }
+                            }
+                        }
+                    ]}
+                />
             </div>
         )
     }

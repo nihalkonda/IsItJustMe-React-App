@@ -60,7 +60,7 @@ export default class ReadPost extends Component<{
                 <CreateOpinion postId={this.post.data._id} postAuthorView={isPostAuthor}/>
                 <CreateComment postId={this.post.data._id} postAuthorView={isPostAuthor}/>
                 <h3>Comments</h3>
-                <SearchResults itemType='comment' item={comment} loaded={this.state.loaded} quickFilters={[
+                <SearchResults itemType='comment' item={comment} loaded={this.state.loaded} runFilter={'Latest'} quickFilters={[
                     {
                         label:'Latest',
                         filter:{

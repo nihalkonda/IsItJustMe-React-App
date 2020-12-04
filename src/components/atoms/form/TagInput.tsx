@@ -63,7 +63,7 @@ export default class TagInput extends Component<config> {
         return (
             <div>
                 <Form.Group>
-                    <Form.Label>Tags <small>(Press 'Enter' to add a tag.)</small></Form.Label>
+                    <Form.Label>{this.props.label || 'Tags'} <small>{this.props.description || "(Press 'Enter' to add a tag.)"}</small></Form.Label>
                     <Form.Control
                         style={{ maxWidth: 600 }}
                         type={this.props.type}
@@ -91,7 +91,7 @@ export default class TagInput extends Component<config> {
                 </Form.Group>
                 <div>
                     {
-                        this.state.tags.map((tag) => <MyChip tag={{tag}} onDelete={() => { this.deleteTag(tag) }} />)
+                        this.state.tags.map((tag) => <MyChip tag={{ tag }} onDelete={() => { this.deleteTag(tag) }} />)
                     }
                 </div>
             </div>

@@ -11,7 +11,8 @@ import Headers from './rest/rest/headers';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect
 } from "react-router-dom";
 
 import { Container } from 'react-bootstrap';
@@ -37,6 +38,7 @@ import ReadTag from './pages/tag/ReadTag';
 import LocationLoader from './components/atoms/LocationLoader';
 
 import * as CommonUtils from './utils/common.utils';
+import AboutUs from './pages/AboutUs';
 
 export default class Main extends Component {
     render() {
@@ -56,13 +58,16 @@ export default class Main extends Component {
                         position: 'relative'
                     }}>
                         <Switch>
-                            <Route exact path="/">
+                            <Route exact path="/" >
                                 <h1>Home</h1>
-                                <Test />
+                                <Redirect to="/post"/>
 
                             </Route>
                             <Route exact path="/oops">
                                 <Oops />
+                            </Route>
+                            <Route exact path="/about_us">
+                                <AboutUs/>
                             </Route>
                             <Route exact path="/auth/sign_up">
                                 <SignUp />
@@ -100,6 +105,7 @@ export default class Main extends Component {
                                 <HomeTag />
                             </Route>
                             <Route exact path="/tag/:tagId" render={(props) => <ReadTag {...props} />} />
+
                         </Switch>
                         <ToastPanel />
                     </Container>

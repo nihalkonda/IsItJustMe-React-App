@@ -42,10 +42,18 @@ export default class MyChip extends Component<{
 
         console.log(tds)
 
+        let extras:any = {};
+
+        if(this.props.tag._id){
+            extras.to=`/tag/${this.props.tag._id}`;
+        }else{
+            extras.to="#";
+        }
+
         return (
             <Link onClick={(event) => {
                 event.stopPropagation();
-            }} to={`/tag/${this.props.tag._id}`}>
+            }} {...{...extras}} >
                 <table style={{
                     border: '1px solid',
                     borderRadius: 10,
