@@ -3,7 +3,7 @@ import {Comment, Post} from '../../rest/data/posts';
 import PostView from '../../components/molecules/fullview/PostView';
 import headers from '../../rest/rest/headers';
 import SearchResults from '../../components/templates/SearchResults';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import CreateComment from '../comment/CreateComment';
 import { PubSub, Subscriber, Topic } from '../../utils/pubsub';
 //import CreateOpinion from '../opinion/CreateOpinion';

@@ -4,14 +4,20 @@ import { config } from './Types';
 
 export default class MyButtonGroup extends Component<config> {
     state = {
-        selectedButton: null
+        selectedButton: null,
+        loaded:0
     };
 
     componentDidMount() {
-        this.setState({ selectedButton: this.props.defaultValue });
+        this.setState({ selectedButton: this.props.defaultValue||{label:'',value:null},loaded:new Date().getTime() });
+        if(this.props.defaultValue)
+            this.props.valueChanged(this.props.defaultValue.value);
     }
 
     render() {
+
+        if(!this.state.loaded)
+            return <div></div>;
 
         return (
             <ButtonGroup style={{
@@ -20,13 +26,13 @@ export default class MyButtonGroup extends Component<config> {
             }}>
                 {
                     this.props.valueList.map(({ label, value }) => <Button onClick={() => {
-                        if (this.state.selectedButton !== value)
+                        if (this.state.selectedButton.label !== label)
                             this.setState({
-                                selectedButton: value
+                                selectedButton: {label,value}
                             }, () => {
                                 this.props.valueChanged(value)
                             })
-                    }} variant={value === this.state.selectedButton ? "primary" : "outline-primary"} 
+                    }} variant={label === this.state.selectedButton.label ? "primary" : "outline-primary"} 
                     style={{
                         borderColor:'transparent'
                     }}>{label}</Button>)

@@ -9,6 +9,7 @@ import MyTags from '../MyTags';
 import MyValueComponent from '../../atoms/MyValueComponent';
 import MyCard from '../../atoms/MyCard';
 import MyAddressText from '../../atoms/MyAddressText';
+import * as CommonUtils from '../../../utils/common.utils';
 
 export default class PostPreview extends Component<{
     post:Post
@@ -19,7 +20,7 @@ export default class PostPreview extends Component<{
         return (
             <div>
                 <MyCard isLink to={'/post/'+this.props.post.data._id} style={{
-                    minWidth:700
+                    minWidth:'50vw'
                 }}>
                     <Card.Body>
                         <Row>
@@ -58,8 +59,9 @@ export default class PostPreview extends Component<{
                                 <Card.Title>{this.props.post.data.content.title}</Card.Title>
                                 <Card.Text>
                                     <MyTags tags={this.props.post.data.content.tags as ITag[]}/>
-                                    <StatsPreview type='post' {...this.props.post.data.stats}/>
+                                    {/* <StatsPreview type='post' {...this.props.post.data.stats}/> */}
                                     <p>Location: <MyAddressText location={this.props.post.data.location}/></p>
+                                    <p>Created: {CommonUtils.timeSince(new Date(this.props.post.data.createdAt))}</p>
                                     <UserProfilePreview {...this.props.post.data.author} small={true}/>
                                 </Card.Text>
                             </Col>

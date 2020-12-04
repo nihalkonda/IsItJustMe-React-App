@@ -28,6 +28,8 @@ export default class SearchResults extends Component<{
     }
 
     applyFilter(value){
+        if(!this.searchRestObject)
+            this.searchRestObject = this.getSearchRestObject(this.props.itemType);
         this.searchRestObject.request.query=value.query;
         this.searchRestObject.request.sort=value.sort;
         this.searchRestObject.request.pageNum=1;
@@ -62,7 +64,7 @@ export default class SearchResults extends Component<{
 
     componentWillReceiveProps(){
         console.log('SearchResults','componentWillReceiveProps',this.props);
-        this.reload();
+            this.reload();
     }
 
     render() {
@@ -122,14 +124,16 @@ export default class SearchResults extends Component<{
                     }
                 </Nav> */}
 
-                {/* {
-                    this.props.quickFilters && this.applyFilter(this.props.quickFilters[0]) &&
-                    <MyButtonGroup id='' type=''
+                {
+                    this.props.quickFilters && 
+                    <MyButtonGroup id='' type='' defaultValue={this.props.quickFilters[0]}
                         valueList={this.props.quickFilters.map(({label,filter})=>{return {label,value:filter}})}
                         valueChanged={(filter)=>{
+                            //alert(JSON.stringify(filter));
+                            if(filter)
                             this.applyFilter(filter);
                         }}/>
-                } */}
+                }
                 <h6 style={{margin:'10px 0px'}}>{title}</h6>
                 <ItemList itemType={this.props.itemType} items={items} />
                 <MyPagination totalPageCount={this.searchRestObject.response.pageCount} selectedPage={this.searchRestObject.response.pageNum} pageSelected={(pageNum:number)=>{
