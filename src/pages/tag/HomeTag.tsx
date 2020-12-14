@@ -1,39 +1,36 @@
-import React, { Component } from 'react'
-import MyTags from '../../components/molecules/MyTags';
-import { ITag, Tag } from '../../rest/data/posts';
-import SearchRESTObject from '../../rest/rest/search.rest.object';
+import { REST } from 'nk-rest-js-library';
+import React from 'react'
+import MyChip from '../../components/atoms/tag/MyTag';
+import { Tag } from '../../rest/data/posts';
 
-export default class HomeTag extends Component {
+export default function HomeTag() {
+    const [searchRestObject] = React.useState(new REST.SearchRESTObject(new Tag()));
 
-    state={
-        loaded:0
-    };
+    const [loaded, setLoaded] = React.useState(false);
 
-    searchRestObject:SearchRESTObject<ITag>;
-
-
-    componentDidMount(){
-        this.searchRestObject = new SearchRESTObject(new Tag());
-        this.searchRestObject.request.sort={
-            "count":-1
+    React.useEffect(() => {
+        searchRestObject.request.sort = {
+            "count": -1
         };
-        this.searchRestObject.request.pageSize=-5497;
-        this.searchRestObject.search().then(()=>{
-            this.setState({loaded:new Date().getTime()});
-        }).catch(()=>{
+        searchRestObject.request.pageSize = -5497;
+        REST.SafePromise(searchRestObject.search()).then(() => {
+            setLoaded(true);
+        }).catch(() => {
 
         })
-    }
+    }, [])
 
-    render() {
-        if(!this.state.loaded){
-            return <span></span>;
-        }
-        return (
+    if (!loaded)
+        return <></>
+
+    return (
+        <div>
+            <h4>Displaying {searchRestObject.response.resultSize} of {searchRestObject.response.resultTotalSize} tags.</h4>
             <div>
-                <h1>Available Tags</h1>
-                <MyTags tags={this.searchRestObject.response.result.map((t)=>t.data)}/>
+                {
+                    searchRestObject.response.result.map(t => <MyChip tag={t.data} />)
+                }
             </div>
-        )
-    }
+        </div>
+    )
 }

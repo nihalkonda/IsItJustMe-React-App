@@ -1,31 +1,31 @@
 import { API } from '../../rest/api';
-import RESTObject from '../../rest/rest.object';
+import { REST } from 'nk-rest-js-library';
 
-interface IUser{
-    _id:string;
-    userId:string;
-    email:string;
-    firstName:string;
-    lastName:string;
-    displayPicture:string;
-    [props:string]:any;
+interface IUser {
+    _id: string;
+    userId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    displayPicture: string;
+    [props: string]: any;
 }
 
-class User extends RESTObject<IUser>{
+class User extends REST.RESTObject<IUser>{
 
-    constructor(){
+    constructor() {
         super(API.USER);
         this.overloadables.init = () => {
             this.setData({
-                _id:'',
-                userId:'',
-                email:'',
-                firstName:'',
-                lastName:'',
-                displayPicture:'',
-                customAttributes:{},
-                createdAt:0,
-                lastModifiedAt:0
+                _id: '',
+                userId: '',
+                email: '',
+                firstName: '',
+                lastName: '',
+                displayPicture: '',
+                customAttributes: {},
+                createdAt: 0,
+                lastModifiedAt: 0
             });
         };
 
@@ -40,19 +40,19 @@ class User extends RESTObject<IUser>{
         this.overloadables.creationPacket = () => {
             throw new Error('User is not creatable.');
         }
-    
+
         this.overloadables.updationPacket = () => {
             return {
-                firstName:this.data.firstName||'',
-                lastName:this.data.lastName||'',
-                displayPicture:this.data.displayPicture||''
+                firstName: this.data.firstName || '',
+                lastName: this.data.lastName || '',
+                displayPicture: this.data.displayPicture || ''
             }
         }
 
         this.overloadables.init();
     }
 
-    async getMe(){
+    async getMe() {
         this.data._id = 'me';
         await this.read();
     }

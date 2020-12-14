@@ -1,42 +1,41 @@
-import React, { Component } from 'react'
-import {Link} from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
 import { Comment } from '../../../rest/data/posts'
-import * as Invoker from '../../../utils/factory/invoker'
-import MyRichTextContainer from '../../atoms/MyRichTextContainer'
+// import * as Invoker from '../../../utils/factory/invoker'
+// import MyRichTextContainer from '../../atoms/MyRichTextContainer'
+import * as NkReactLibrary from 'nk-react-library';
 import StatsPreview from '../preview/StatsPreview'
 import UserProfilePreview from '../preview/UserProfilePreview'
 import MyAddressText from '../../atoms/MyAddressText';
 
-export default class CommentView extends Component<{
-    comment:Comment,
-    authorView:boolean
-}> {
 
-    render() {
 
-        const comment = this.props.comment;
+export default function CommentView({ comment, authorView }: {
+    comment: Comment,
+    authorView: boolean
+}) {
 
-        let extraPanel = <span></span>;
+    let extraPanel = <span></span>;
 
-        if(this.props.authorView){
-            extraPanel = <tr>
-                <td colSpan={2}>
-                    <Button as={Link} to={`/post/${comment.data.postId}/comment/${comment.data._id}/update`}>Update Comment</Button>
-                    <Button as={Link} to={`/post/${comment.data.postId}/comment/${comment.data._id}/delete`}>Delete Comment</Button>
-                </td>
-            </tr>
-        }
+    if (authorView) {
+        extraPanel = <tr>
+            <td colSpan={2}>
+                <Button as={Link} to={`/post/${comment.data.postId}/comment/${comment.data._id}/update`}>Update Comment</Button>
+                <Button as={Link} to={`/post/${comment.data.postId}/comment/${comment.data._id}/delete`}>Delete Comment</Button>
+            </td>
+        </tr>
+    }
 
-        return (
+    return (
         <div>
-            <table {...{border:1}}>
+            <table {...{ border: 1 }}>
                 <tr>
                     <th>
                         Content
                     </th>
                     <td>
-                        <MyRichTextContainer html={comment.data.content}/>
+                        <NkReactLibrary.Components.Commons.NkRichTextContainer html={comment.data.content} />
                     </td>
                 </tr>
                 <tr>
@@ -52,7 +51,7 @@ export default class CommentView extends Component<{
                         Location
                     </th>
                     <td>
-                        <MyAddressText location={this.props.comment.data.location}/>
+                        <MyAddressText location={comment.data.location} />
                     </td>
                 </tr>
                 <tr>
@@ -60,7 +59,7 @@ export default class CommentView extends Component<{
                         Stats
                     </th>
                     <td>
-                        <StatsPreview type='comment' {...comment.data.stats}/>
+                        <StatsPreview type='comment' {...comment.data.stats} />
                     </td>
                 </tr>
                 <tr>
@@ -84,13 +83,12 @@ export default class CommentView extends Component<{
                         Created By
                     </th>
                     <td>
-                        <UserProfilePreview {...comment.data.author}/>
+                        <UserProfilePreview {...comment.data.author} />
                     </td>
                 </tr>
                 {extraPanel}
             </table>
-            <br/>
+            <br />
         </div>
-        )
-    }
+    )
 }

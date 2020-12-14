@@ -1,15 +1,22 @@
-import {PubSub,Topic} from '.';
+import { Services } from 'nk-js-library';
+import Topic from './topic';
 
 // const createToast = (title:string,body:string) => { 
 //     PubSub.publishMessage(Topic.TOAST.NEW_MESSAGE,{title,body});
 // }
 
 const publishLoginStatusChanged = () => {
-    PubSub.publishMessage(Topic.AUTH.LOGIN_STATUS_CHANGED,{});
+    Services.PubSubService.Organizer.publishMessage({
+        type: Topic.AUTH.LOGIN_STATUS_CHANGED,
+        data: {}
+    });
 }
 
 const publishTokenExpired = () => {
-    PubSub.publishMessage(Topic.AUTH.TOKEN_EXPIRED,{});
+    Services.PubSubService.Organizer.publishMessage({
+        type: Topic.AUTH.TOKEN_EXPIRED,
+        data: {}
+    });
 }
 
 // const redirectToURL = (url:string) => {
@@ -17,11 +24,17 @@ const publishTokenExpired = () => {
 // }
 
 const commentCreated = () => {
-    PubSub.publishMessage(Topic.COMMENT.CREATED,{});
+    Services.PubSubService.Organizer.publishMessage({
+        type: Topic.COMMENT.CREATED,
+        data: {}
+    });
 }
 
 const opinionCreated = () => {
-    PubSub.publishMessage(Topic.OPINION.CREATED,{});
+    Services.PubSubService.Organizer.publishMessage({
+        type: Topic.OPINION.CREATED,
+        data: {}
+    });
 }
 
 export {

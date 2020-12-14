@@ -1,38 +1,47 @@
-import React, { Component } from 'react'
-import {Link} from 'react-router-dom';
+import React from 'react'
 import { User } from '../../rest/data/user-management';
 import UserProfile from '../../components/molecules/fullview/UserProfile';
-import safePromise from '../../rest/rest/safe.promise';
+import { Post } from '../../rest/data/posts';
+import SearchResults from '../../components/templates/SearchResults';
+import { REST } from 'nk-rest-js-library';
 
-export default class MyProfile extends Component<{
-    [key:string]:any
-}> {
-    state = {
-        loaded:0
-    };
+export default function MyProfile({ userId }: { userId: string }) {
+    const [user] = React.useState(new User());
+    const [loaded, setLoaded] = React.useState(0);
 
-    user:User;
-
-    componentDidMount(){
-        this.user = new User();
-        console.log(this.props);
-        this.user.data._id = this.props.match.params.userId;
-        safePromise(this.user.read()).then((result)=>{
-            console.log('User','Me','result',result);
-            this.setState({loaded:new Date().getTime()});
-        }).catch((err)=>{
-            console.log('User','Me','err',err,'name',err.name,'message',err.message,'response',err.response);
+    React.useEffect(() => {
+        user.data._id = userId;
+        REST.SafePromise(user.read()).then((result) => {
+            console.log('User', 'Me', 'result', result);
+            setLoaded(new Date().getTime());
+        }).catch((err) => {
+            console.log('User', 'Me', 'err', err, 'name', err.name, 'message', err.message, 'response', err.response);
         })
-    }
-    render() {
-        if(!this.state.loaded){
-            return <div></div>
-        }
+    }, [])
 
-        return (
-            <div>
-                <UserProfile {...this.user.data}/>
-            </div>
-        )
-    }
+    if (!loaded)
+        return <></>
+
+    return (
+        <div>
+            <UserProfile {...user.data} />
+            <hr />
+            <SearchResults itemType='post' item={new Post()}
+                quickFilters={[
+                    {
+                        label: 'Posts',
+                        filter: {
+                            sort: {
+                                "createdAt": -1
+                            },
+                            query: {
+                                "isDeleted": false,
+                                "author": user.data.userId
+                            }
+                        }
+                    }
+                ]}
+            />
+        </div>
+    )
 }

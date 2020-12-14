@@ -39,7 +39,6 @@ export default class MyIcon extends Component<{
                 return <RiCloseCircleFill {...props}/>;
             default:
                 return <FaArrowUp {...props}/>;
-                break;
         }
     }
 }

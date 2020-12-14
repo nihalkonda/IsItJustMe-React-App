@@ -1,23 +1,21 @@
-import React, { Component } from 'react'
-import { Alert } from 'react-bootstrap'
+import React from 'react'
 
-export default class MyValueComponent extends Component<{
+export default function MyValueComponent({values}:{
     values:{
         singular:string,
         plural?:string,
         value:number,
         variant?:number
     }[]
-}> {
-    render() {
+}) {
         
-        if(this.props.values.length === 0)
+        if(values.length === 0)
             return <span></span>;
 
-        let valueComponent = this.props.values[0];
+        let valueComponent = values[0];
 
-        for (let i = 1; i < this.props.values.length && valueComponent.value <= 0; i++) {
-            valueComponent = this.props.values[i];
+        for (let i = 1; i < values.length && valueComponent.value <= 0; i++) {
+            valueComponent = values[i];
         }
 
         const style={color:'#fafafa',backgroundColor:'#32C809',border:'2px solid #32C809'};
@@ -65,5 +63,4 @@ export default class MyValueComponent extends Component<{
                 </tr>
             </table>
         )
-    }
 }

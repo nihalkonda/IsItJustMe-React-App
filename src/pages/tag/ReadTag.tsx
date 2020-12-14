@@ -1,91 +1,204 @@
-import React, { Component } from 'react'
+import React from 'react'
 import GoogleMapReact from 'google-map-react';
 
-import { IPost, Post, Tag } from '../../rest/data/posts';
-import SearchRESTObject from '../../rest/rest/search.rest.object';
+import { Post, Tag } from '../../rest/data/posts';
 
 import * as CommonUtils from '../../utils/common.utils';
+import { REST } from 'nk-rest-js-library';
+import { Bar } from 'react-chartjs-2';
 
-export default class ReadTag extends Component<{
-    [key: string]: any
-}> {
+import * as NkReactLibrary from 'nk-react-library';
 
-    tag: Tag;
+enum TimeSeriesTypes {
+    Date = 'D', Month = 'M', Year = 'Y'
+}
 
-    searchRestObject:SearchRESTObject<IPost>;
+class TimeSeries {
 
-    state :{
-        loaded:number,
-        heatMapData:GoogleMapReact.Position[]
-    } = {
-        loaded: 0,
-        heatMapData:[]
+    static monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+    timestamps: Date[];
+
+    labelCount: { [key: string]: { labels: string[], values: number[] } };
+
+    constructor(timestamps: Date[]) {
+        this.timestamps = timestamps;
+        this.labelCount = {};
     }
 
-    componentDidMount() {
-        this.tag = new Tag();
-        this.tag.data._id = this.props.match.params.tagId;
-        this.searchRestObject = new SearchRESTObject(new Post());
-        this.tag.read().then(() => {
-            this.searchRestObject.request.query={
-                "content.tags":this.tag.data.tag
+    static dateLabel(date: Date) {
+        return `${date.getDate()} ${TimeSeries.monthLabel(date)}`
+    }
+
+    static monthLabel(date: Date) {
+        return `${TimeSeries.monthLabels[date.getMonth()]} ${TimeSeries.yearLabel(date)}`
+    }
+
+    static yearLabel(date: Date) {
+        return `${date.getFullYear()}`
+    }
+
+    groupBy(type: TimeSeriesTypes) {
+
+        console.log(this.labelCount);
+
+        if (this.labelCount[type])
+            return this.labelCount[type];
+
+        this.labelCount = {};
+
+        this.labelCount[type] = {
+            labels: [],
+            values: []
+        };
+
+        const labelMaker = (type === TimeSeriesTypes.Date ?
+            TimeSeries.dateLabel :
+            (
+                type === TimeSeriesTypes.Month ?
+                    TimeSeries.monthLabel :
+                    TimeSeries.yearLabel
+            )
+        );
+
+        const labelCount = {};
+
+        this.timestamps.forEach((t) => {
+            const label = labelMaker(t);
+            if (!labelCount[label])
+                labelCount[label] = 1
+            else
+                labelCount[label] += 1
+        })
+
+        const labels = Object.keys(labelCount);
+        const values = labels.map(l => labelCount[l]);
+
+        this.labelCount[type] = { labels, values };
+
+        return this.labelCount[type];
+    }
+
+}
+
+export default function ReadTag({ tagId }: { tagId: string }) {
+
+    const [tag] = React.useState(new Tag());
+    const [analyticsTab, setAnalyticsTab] = React.useState({ value: 'heatmap', label: 'Heat Map' });
+    const [timeSeriesTab, setTimeSeriesTab] = React.useState<{ value: TimeSeriesTypes, label: string }>({ value: TimeSeriesTypes.Date, label: 'Date' });
+    const [searchRestObject] = React.useState(new REST.SearchRESTObject(new Post()));
+    const [heatMapData, setHeatMapData] = React.useState<GoogleMapReact.Position[]>([]);
+    const [timeSeries, setTimeSeries] = React.useState(new TimeSeries([]));
+    const [loaded, setLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        tag.data._id = tagId;
+        tag.read().then(() => {
+            searchRestObject.request.query = {
+                "content.tags": tag.data.tag
             };
-            this.searchRestObject.request.attributes=["createdAt","location"];
-            this.searchRestObject.request.pageSize=-5497;
-            this.searchRestObject.search().then(()=>{
-                
-                const temp:GoogleMapReact.Position[] = [];
+            searchRestObject.request.sort = {
+                "createdAt": 1
+            };
+            searchRestObject.request.attributes = ["createdAt", "location"];
+            searchRestObject.request.pageSize = -5497;
+            searchRestObject.search().then(() => {
 
-                console.log(this.searchRestObject.response.result)
+                setHeatMapData(searchRestObject.response.result.map((post) => {
+                    return { lat: post.data.location.latitude, lng: post.data.location.longitude };
+                }));
 
-                this.searchRestObject.response.result.forEach((post)=>{
-                    console.log(post.data.createdAt,post.data.location.latitude,post.data.location.longitude);
-                    temp.push({lat:post.data.location.latitude,lng:post.data.location.longitude});
-                })
+                setTimeSeries(new TimeSeries(searchRestObject.response.result.map(p => new Date(p.data.createdAt))));
 
-                this.setState({
-                    loaded:new Date().getTime(),
-                    heatMapData:temp
-                })
+                setLoaded(true);
 
-            }).catch(()=>{
-
+            }).catch((error) => {
+                console.error(error);
             });
-        }).catch(() => {
-
+        }).catch((error) => {
+            console.error(error);
         });
-    }
+    }, [])
 
-    render() {
-        if (!this.state.loaded) {
-            return <span></span>
-        }
+    if (!loaded)
+        return <></>
 
-        console.log(this.state);
+    return (
+        <div>
+            <h3>{tag.data.tag}</h3>
+            <br />
+            <NkReactLibrary.Components.NkFormElements.NkButtonGroup
+                id='analyticsType'
+                type='' defaultValue={analyticsTab}
+                valueList={[
+                    { value: 'heatmap', label: 'Heat Map' },
+                    { value: 'timeseries', label: 'Time Series' }
+                ]}
+                valueChanged={(id, { label, value }) => {
+                    console.log({ id, value, label });
+                    if (value)
+                        setAnalyticsTab({ value, label });
 
-        return (
-            <div>
-                <h1>Map</h1>
-                <br/>
-                <div style={{width: "100%", height: 500}}>
-                    <GoogleMapReact
-                        yesIWantToUseGoogleMapApiInternals={true}
-                        bootstrapURLKeys={{ key: 'AIzaSyDl4dmvk0tBIX0-BWCaOZy0MjAcTtLHo60' }}
-                        defaultCenter={{
-                            lat: CommonUtils.getLocation().latitude,
-                            lng: CommonUtils.getLocation().longitude
-                        }}
-                        defaultZoom={11}
-                        heatmapLibrary={true}          
-                        heatmap={{
-                            positions:this.state.heatMapData,
-                            options:{}
-                        }}
-                    >
+                }} />
+            <hr />
+            {
+                analyticsTab.value === 'heatmap' ?
+                    <div style={{ width: "100%", height: 500 }}>
+                        <GoogleMapReact
+                            yesIWantToUseGoogleMapApiInternals={true}
+                            bootstrapURLKeys={{ key: 'AIzaSyDl4dmvk0tBIX0-BWCaOZy0MjAcTtLHo60' }}
+                            defaultCenter={{
+                                lat: CommonUtils.getLocation().latitude,
+                                lng: CommonUtils.getLocation().longitude
+                            }}
+                            defaultZoom={0}
+                            heatmapLibrary={true}
+                            options={{
+                                mapTypeId: 'satellite'
+                            }}
+                            heatmap={{
+                                positions: heatMapData,
+                                options: {}
+                            }}
+                        >
 
-                    </GoogleMapReact>
-                </div>
-            </div>
-        )
-    }
+                        </GoogleMapReact>
+                    </div> :
+                    <div>
+                        <NkReactLibrary.Components.NkFormElements.NkButtonGroup
+                            id='timeSeriesType'
+                            type='' defaultValue={timeSeriesTab}
+                            valueList={[
+                                { value: TimeSeriesTypes.Date, label: 'Date' },
+                                { value: TimeSeriesTypes.Month, label: 'Month' },
+                                { value: TimeSeriesTypes.Year, label: 'Year' }
+                            ]}
+                            valueChanged={(id, { label, value }) => {
+                                console.log({ id, value, label });
+                                if (value)
+                                    setTimeSeriesTab({ value, label });
+
+                            }} />
+                        <br />
+                        <Bar
+                            data={{
+                                labels: timeSeries.groupBy(timeSeriesTab.value).labels,
+                                datasets: [
+                                    {
+                                        label: 'Time Series',
+                                        backgroundColor: 'rgba(255,99,132,0.2)',
+                                        borderColor: 'rgba(255,99,132,1)',
+                                        borderWidth: 1,
+                                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                        hoverBorderColor: 'rgba(255,99,132,1)',
+                                        data: timeSeries.groupBy(timeSeriesTab.value).values
+                                    }
+                                ]
+                            }}
+                        />
+                    </div>
+            }
+
+        </div>
+    )
 }

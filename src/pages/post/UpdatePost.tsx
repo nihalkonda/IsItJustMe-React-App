@@ -1,97 +1,95 @@
+import { REST } from 'nk-rest-js-library';
 import React, { Component } from 'react'
-import { config } from '../../components/atoms/form/Types';
-import MyForm from '../../components/molecules/MyForm';
-import { ITag, Post } from '../../rest/data/posts';
-import headers from '../../rest/rest/headers';
-import safePromise from '../../rest/rest/safe.promise';
-import * as Publisher from '../../utils/pubsub/publisher';
-import * as Invoker from '../../utils/factory/invoker';
+import { Post } from '../../rest/data/posts';
 import * as RestUtils from '../../rest/RestUtils';
+import * as NkReactLibrary from 'nk-react-library';
+import TagInput from '../../components/atoms/tag/MyTagInput';
 
 export default class UpdatePost extends Component<{
-    [key:string]:any
+    postId: string
 }> {
 
     state = {
-        loaded:0
+        loaded: 0
     };
 
-    post:Post;
+    post: Post;
 
-    componentDidMount(){
+    componentDidMount() {
         this.post = new Post();
         console.log(this.props);
-        this.post.data._id = this.props.match.params.postId;
-        safePromise(this.post.read()).then((result)=>{
-            console.log('Post','Read','result',result);
-            this.setState({loaded:new Date().getTime()});
-        }).catch((err)=>{
-            console.log('Post','Read','err',err);
-        })  
+        this.post.data._id = this.props.postId;
+        REST.SafePromise(this.post.read()).then((result) => {
+            console.log('Post', 'Read', 'result', result);
+            this.setState({ loaded: new Date().getTime() });
+        }).catch((err) => {
+            console.log('Post', 'Read', 'err', err);
+        })
     }
     render() {
-        if(!this.state.loaded){
+        if (!this.state.loaded) {
             return <div></div>
         }
 
-        if(this.post.data.author.userId !== headers.getUserId()){
-            Invoker.createToast('Post Update Failed','');
-            Invoker.redirectToURL('/post/'+this.post.data._id);
+        if (this.post.data.author.userId !== REST.Headers.getUserId()) {
+            NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Post Update Failed', '');
+            NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post/' + this.post.data._id);
             return <div></div>
         }
 
         return (
             <div>
-                <MyForm title="Update Post" description="Update your post." formConfig={[
+                <NkReactLibrary.Components.NkForm title="Update Post" description="Update your post." formConfig={[
                     {
-                        id:'title',
-                        type:'input',
-                        label:'Title',
-                        defaultValue:this.post.data.content.title,
-                        required:true
+                        id: 'title',
+                        type: 'input',
+                        label: 'Title',
+                        defaultValue: this.post.data.content.title,
+                        required: true
                     },
                     {
-                        id:'body',
-                        type:'rich-text',
-                        label:'Body',
-                        defaultValue:this.post.data.content.body
+                        id: 'body',
+                        type: 'rich-text',
+                        label: 'Body',
+                        defaultValue: this.post.data.content.body
                     },
                     {
-                        id:'tags',
-                        type:'tag',
-                        defaultValue:(this.post.data.content.tags as any[]).map((t)=>{
-                            if(t.constructor === ''.constructor){
+                        id: 'tags',
+                        type: 'custom',
+                        defaultValue: (this.post.data.content.tags as any[]).map((t) => {
+                            if (t.constructor === ''.constructor) {
                                 return t;
-                            }else{
+                            } else {
                                 return t.tag;
                             }
                         }),
-                        liveSuggestions:(value,callback)=>{
-                            RestUtils.liveTagSuggestions(value,callback);
-                        }
+                        liveSuggestions: (value, callback) => {
+                            RestUtils.liveTagSuggestions(value, callback);
+                        },
+                        customComponent: TagInput
                     },
                     {
-                        id:'submit',
-                        type:'submit',
-                        label:'Update Post'
+                        id: 'submit',
+                        type: 'submit',
+                        label: 'Update Post'
                     }
-                ]} formSubmit={(result)=>{
-                    console.log('submitted',result);
+                ]} formSubmit={(result) => {
+                    console.log('submitted', result);
 
                     this.post.data.content.title = result.title;
                     this.post.data.content.body = result.body;
                     this.post.data.content.tags = result.tags;
 
-                    safePromise(this.post.update()).then((result)=>{
-                        console.log('UodatePost','formSubmit','update','result',result);
-                        Invoker.createToast('Post Updated','Post has been updated.');
-                        Invoker.redirectToURL('/post/'+this.post.data._id);
-                    }).catch((error)=>{
-                        console.log('CreatePost','formSubmit','update','error',error);
-                        Invoker.createToast('Post Updation Failed','Post updation has failed.');
+                    REST.SafePromise(this.post.update()).then((result) => {
+                        console.log('UodatePost', 'formSubmit', 'update', 'result', result);
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Post Updated', 'Post has been updated.');
+                        NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post/' + this.post.data._id);
+                    }).catch((error) => {
+                        console.log('CreatePost', 'formSubmit', 'update', 'error', error);
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Post Updation Failed', 'Post updation has failed.');
                     })
 
-                }}/>
+                }} />
             </div>
         )
     }

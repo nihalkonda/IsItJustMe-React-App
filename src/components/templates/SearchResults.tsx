@@ -1,91 +1,88 @@
-import React,{Component} from 'react'
-import { Button, ButtonGroup, Form, Nav } from 'react-bootstrap';
+import { REST } from 'nk-rest-js-library';
+import React, { Component } from 'react'
 import { Post, Comment, Tag, IPost, IComment, ITag } from '../../rest/data/posts';
-import safePromise from '../../rest/rest/safe.promise';
-import SearchRESTObject from '../../rest/rest/search.rest.object';
-import MyButtonGroup from '../atoms/form/MyButtonGroup';
-import MyPagination from '../atoms/MyPagination'
-import ItemList from '../organisms/ItemList'
+import ItemList from '../organisms/ItemList';
+import * as NkReactLibrary from 'nk-react-library';
 
 export default class SearchResults extends Component<{
-    itemType:string,
-    item:Post|Comment|Tag,
-    quickFilters?:{label:string,filter:any}[],
-    callback?:any,
-    [key:string]:any
+    itemType: string,
+    item: Post | Comment | Tag,
+    quickFilters?: { label: string, filter: any }[],
+    callback?: any,
+    [key: string]: any
 }> {
     state = {
-        loaded:0
+        loaded: 0
     };
 
     oldFilterLabel;
 
-    searchRestObject:SearchRESTObject<IPost|IComment|ITag>;
+    searchRestObject: REST.SearchRESTObject<IPost | IComment | ITag>;
 
-    getSearchRestObject(itemType:string){
-        switch(itemType){
-            case 'post': return new SearchRESTObject<IPost>(this.props.item as Post);
-            case 'comment': return new SearchRESTObject<IComment>(this.props.item as Comment);
-            default: return new SearchRESTObject<ITag>(this.props.item as Tag);
+    getSearchRestObject(itemType: string) {
+        switch (itemType) {
+            case 'post': return new REST.SearchRESTObject<IPost>(this.props.item as Post);
+            case 'comment': return new REST.SearchRESTObject<IComment>(this.props.item as Comment);
+            default: return new REST.SearchRESTObject<ITag>(this.props.item as Tag);
         }
     }
 
-    rerunFilter(){
+    rerunFilter() {
         let label = this.oldFilterLabel || this.props.quickFilters[0].label;
-        this.applyFilter((this.props.quickFilters.filter(qf=>qf.label===label))[0].filter,label);
+        this.applyFilter((this.props.quickFilters.filter(qf => qf.label === label))[0].filter, label);
     }
 
-    applyFilter(value,label){
+    applyFilter(value, label) {
         //alert(value);
-        if(!this.searchRestObject)
+        if (!this.searchRestObject)
             this.searchRestObject = this.getSearchRestObject(this.props.itemType);
-        if(!value)
+        if (!value)
             return false;
-        this.searchRestObject.request.query=value.query;
-        this.searchRestObject.request.sort=value.sort;
-        this.searchRestObject.request.pageNum=1;
+        this.searchRestObject.request.query = value.query;
+        this.searchRestObject.request.sort = value.sort;
+        this.searchRestObject.request.pageNum = 1;
         this.oldFilterLabel = label;
         this.performSearch();
         return true;
     }
 
-    performSearch(){
-        safePromise(this.searchRestObject.search()).then((result)=>{
-            console.log(this,result);
-            this.setState({loaded:new Date().getTime()});
-        }).catch(()=>{
+    performSearch() {
+        REST.SafePromise(this.searchRestObject.search()).then((result) => {
+            console.log(this, result);
+            this.setState({ loaded: new Date().getTime() });
+        }).catch(() => {
 
         })
     }
 
-    reload(){
+    reload() {
         this.searchRestObject = this.getSearchRestObject(this.props.itemType);
         this.searchRestObject.request.pageSize = 5;
-        this.searchRestObject.request.sort={
-            "lastModifiedAt":-1
+        this.searchRestObject.request.sort = {
+            "lastModifiedAt": -1
         };
-        this.searchRestObject.request.query={
-            "isDeleted":false
+        this.searchRestObject.request.query = {
+            "isDeleted": false
         }
         this.performSearch()
     }
 
-    componentDidMount(){
-       this.reload();
+    componentDidMount() {
+        this.reload();
     }
 
-    componentWillReceiveProps(){
-        console.log('SearchResults','componentWillReceiveProps',this.props);
-            this.reload();
+    componentWillReceiveProps() {
+        console.log('SearchResults', 'componentWillReceiveProps', this.props);
+        this.reload();
     }
 
     render() {
-        if(!this.state.loaded)
+        if (!this.state.loaded)
             return <div></div>;
 
-        let items:Post[]|Comment[]|Tag[] = [];
+        let items: Post[] | Comment[] | Tag[] = [];
 
-        switch(this.props.itemType){
+        switch (this.props.itemType) {
             case 'post':
                 items = this.searchRestObject.response.result as Post[];
                 break;
@@ -98,9 +95,9 @@ export default class SearchResults extends Component<{
 
         let title = `No ${this.props.itemType}s found.`;
 
-        if(this.searchRestObject.response.resultSize > 0){
+        if (this.searchRestObject.response.resultSize > 0) {
             let base = ((this.searchRestObject.response.pageNum - 1) * this.searchRestObject.response.pageSize);
-            title = `Displaying ${base+1} to ${base + this.searchRestObject.response.resultSize} of ${this.searchRestObject.response.resultTotalSize} results`;
+            title = `Displaying ${base + 1} to ${base + this.searchRestObject.response.resultSize} of ${this.searchRestObject.response.resultTotalSize} results`;
         }
 
         // const basicGroups = (value) => {
@@ -124,7 +121,7 @@ export default class SearchResults extends Component<{
 
         return (
             <div>
-                
+
                 {/* <Nav variant="tabs" defaultActiveKey="0" onSelect={(eventKey)=>{
                     console.log(eventKey);
                     basicGroups(parseInt(eventKey));
@@ -137,22 +134,22 @@ export default class SearchResults extends Component<{
                 </Nav> */}
 
                 {
-                    this.props.quickFilters && 
-                    <MyButtonGroup id='' type='' defaultValue={this.props.quickFilters[0]}
-                        valueList={this.props.quickFilters.map(({label,filter})=>{return {label,value:filter}})}
-                        valueChanged={(filter,label)=>{
-                            //alert(JSON.stringify(filter));
-                            if(filter)
-                                this.applyFilter(filter,label);
-                        }}/>
+                    this.props.quickFilters && this.props.quickFilters.length > 1 &&
+                    <NkReactLibrary.Components.NkFormElements.NkButtonGroup id='' type='' defaultValue={this.props.quickFilters[0]}
+                        valueList={this.props.quickFilters.map(({ label, filter }) => { return { label, value: filter } })}
+                        valueChanged={(id, { label, value }) => {
+                            console.log({ id, value, label });
+                            if (value)
+                                this.applyFilter(value, label);
+                        }} />
                 }
-                <h6 style={{margin:'10px 0px'}}>{title}</h6>
+                <h6 style={{ margin: '10px 0px' }}>{title}</h6>
                 <ItemList itemType={this.props.itemType} items={items} />
-                <MyPagination totalPageCount={this.searchRestObject.response.pageCount} selectedPage={this.searchRestObject.response.pageNum} pageSelected={(pageNum:number)=>{
-                    console.log('pageNum',pageNum);
-                    this.searchRestObject.request.pageNum=pageNum;
+                <NkReactLibrary.Components.Commons.NkPagination totalPageCount={this.searchRestObject.response.pageCount} selectedPage={this.searchRestObject.response.pageNum} pageSelected={(pageNum: number) => {
+                    console.log('pageNum', pageNum);
+                    this.searchRestObject.request.pageNum = pageNum;
                     this.performSearch();
-                }}/>
+                }} />
             </div>
         )
     }

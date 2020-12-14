@@ -1,58 +1,56 @@
+import { REST } from 'nk-rest-js-library';
 import React, { Component } from 'react'
-import MyForm from '../../components/molecules/MyForm';
 import { Auth } from '../../rest/data/user-management';
-import safePromise from '../../rest/rest/safe.promise';
 import * as Publisher from '../../utils/pubsub/publisher';
-import * as Invoker from '../../utils/factory/invoker';
+import * as NkReactLibrary from 'nk-react-library';
 
 export default class SignUp extends Component {
     render() {
 
         return (
             <div>
-                <MyForm title="Sign Up" description="Get started with IsItJustMe." formConfig={[
+                <NkReactLibrary.Components.NkForm title="Sign Up" description="Get started with IsItJustMe." formConfig={[
                     {
-                        id:'email',
-                        type:'email',
-                        label:'Email',
-                        description:'This email is used for confirmation',
-                        required:true
+                        id: 'email',
+                        type: 'email',
+                        label: 'Email',
+                        description: 'This email is used for confirmation',
+                        required: true
                     },
                     {
-                        id:'password',
-                        type:'password',
-                        label:'Password',
-                        required:true
+                        id: 'password',
+                        type: 'password',
+                        label: 'Password',
+                        required: true
                     },
                     {
-                        id:'firstName',
-                        type:'input',
-                        label:'First Name',
-                        required:true
+                        id: 'firstName',
+                        type: 'input',
+                        label: 'First Name',
+                        required: true
                     },
                     {
-                        id:'lastName',
-                        type:'input',
-                        label:'Last Name'
+                        id: 'lastName',
+                        type: 'input',
+                        label: 'Last Name'
                     },
                     {
-                        id:'submit',
-                        type:'submit',
-                        label:'Register'
+                        id: 'submit',
+                        type: 'submit',
+                        label: 'Register'
                     }
-                ]} formSubmit={(result)=>{
-                    console.log('submitted',result);
-
-                    safePromise(Auth.register(result.email||'',result.password||'',result.firstName||'',result.lastName||'','inapp')).then((result)=>{
-                        console.log('auth','register','result',result);
+                ]} formSubmit={(result) => {
+                    console.log('submitted', result);
+                    REST.SafePromise(Auth.register(result.email || '', result.password || '', result.firstName || '', result.lastName || '', 'inapp')).then((result) => {
+                        console.log('auth', 'register', 'result', result);
                         Publisher.publishLoginStatusChanged();
-                        Invoker.createToast('Sign Up Successfull','Welcome to Is It Just Me');
-                        Invoker.redirectToURL('/user/me');
-                    }).catch((err)=>{
-                        console.log('auth','register','err',err);
-                        Invoker.createToast('Sign In Failed','Sorry, Something went wrong.');
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Sign Up Successfull', 'Welcome to Is It Just Me');
+                        NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/user/me');
+                    }).catch((err) => {
+                        console.log('auth', 'register', 'err', err);
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Sign In Failed', 'Sorry, Something went wrong.');
                     });
-                }}/>
+                }} />
             </div>
         )
     }

@@ -1,9 +1,8 @@
+import { REST } from 'nk-rest-js-library';
 import React, { Component } from 'react'
-import MyForm from '../../components/molecules/MyForm';
 import { Auth } from '../../rest/data/user-management';
-import safePromise from '../../rest/rest/safe.promise';
 import * as Publisher from '../../utils/pubsub/publisher';
-import * as Invoker from '../../utils/factory/invoker';
+import * as NkReactLibrary from 'nk-react-library';
 
 export default class SignIn extends Component {
 
@@ -11,37 +10,36 @@ export default class SignIn extends Component {
 
         return (
             <div>
-                <MyForm title="Sign In" description="Welcome back to IsItJustMe." formConfig={[
+                <NkReactLibrary.Components.NkForm title="Sign In" description="Welcome back to IsItJustMe." formConfig={[
                     {
-                        id:'email',
-                        type:'email',
-                        label:'Email',
-                        required:true
+                        id: 'email',
+                        type: 'email',
+                        label: 'Email',
+                        required: true
                     },
                     {
-                        id:'password',
-                        type:'password',
-                        label:'Password',
-                        required:true
+                        id: 'password',
+                        type: 'password',
+                        label: 'Password',
+                        required: true
                     },
                     {
-                        id:'submit',
-                        type:'submit',
-                        label:'Login'
+                        id: 'submit',
+                        type: 'submit',
+                        label: 'Login'
                     }
-                ]} formSubmit={(result)=>{
-                    console.log('submitted',result);
-                    
-                    safePromise(Auth.login(result.email||'',result.password||'')).then((result)=>{
-                        console.log('auth','login','result',result);
+                ]} formSubmit={(result) => {
+                    console.log('submitted', result);
+                    REST.SafePromise(Auth.login(result.email || '', result.password || '')).then((result) => {
+                        console.log('auth', 'login', 'result', result);
                         Publisher.publishLoginStatusChanged();
-                        Invoker.createToast('Sign In Successfull','Welcome back to Is It Just Me');
-                        Invoker.redirectToURL('/user/me');
-                    }).catch((err)=>{
-                        console.log('auth','login','err',err);
-                        Invoker.createToast('Sign In Failed','Sorry, Something went wrong.');
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Sign In Successfull', 'Welcome back to Is It Just Me');
+                        NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/user/me');
+                    }).catch((err) => {
+                        console.log('auth', 'login', 'err', err);
+                        NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Sign In Failed', 'Sorry, Something went wrong.');
                     });
-                }}/>
+                }} />
             </div>
         )
     }

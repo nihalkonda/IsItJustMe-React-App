@@ -1,41 +1,57 @@
 import React, { Component } from 'react';
-import MyModal from '../../components/molecules/modal/MyModal';
-import Headers from '../../rest/rest/headers';
-import safePromise from '../../rest/rest/safe.promise';
 import * as Publisher from '../../utils/pubsub/publisher';
-import * as Invoker from '../../utils/factory/invoker';
 import { Post } from '../../rest/data/posts';
-import headers from '../../rest/rest/headers';
+import { REST } from 'nk-rest-js-library';
+import * as NkReactLibrary from 'nk-react-library';
 
 export default class DeletePost extends Component<{
-    [key:string]:any
+    postId: string
 }>  {
 
-    modal:MyModal;
+    // modal:MyModal;
 
-    post:Post;
+    post: Post;
 
-    componentDidMount(){
+    componentDidMount() {
         this.post = new Post();
         console.log(this.props);
-        this.post.data._id = this.props.match.params.postId;
-        safePromise(this.post.read()).then((result)=>{
-            console.log('Post','Read','result',result);
-            if(this.post.data.author.userId === headers.getUserId()){
-                this.modal.openModal();
-            }else{
-                Invoker.redirectToURL('/post/'+this.post.data._id);
+        this.post.data._id = this.props.postId;
+        REST.SafePromise(this.post.read()).then((result) => {
+            console.log('Post', 'Read', 'result', result);
+            if (this.post.data.author.userId === REST.Headers.getUserId()) {
+                //this.modal.openModal();
+                NkReactLibrary.Utils.NkReactUtils.Modal.confirm({
+                    title: 'Delete Post',
+                    description: 'Do you want to delete the post?',
+                    negativeLabel: 'Cancel',
+                    positiveLabel: 'Delete',
+                    positiveWarning: true
+                }).then((bool: boolean) => {
+                    if (bool) {
+                        REST.SafePromise(this.post.delete()).then((result) => {
+                            console.log('Post', 'Delete', 'result', result);
+                            NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Post Deleted', '');
+                            NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post');
+                        }).catch((err) => {
+                            console.log('Post', 'Delete', 'err', err);
+                            NkReactLibrary.Utils.NkReactUtils.ToastPanel.addToast('Post Deletion Failed', '');
+                            NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post/' + this.post.data._id);
+                        })
+                    }
+                });
+            } else {
+                NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post/' + this.post.data._id);
             }
-        }).catch((err)=>{
-            console.log('Post','Read','err',err);
-            Invoker.redirectToURL('/post/'+this.post.data._id);
-        }) 
+        }).catch((err) => {
+            console.log('Post', 'Read', 'err', err);
+            NkReactLibrary.Utils.NkReactUtils.Redirect.redirect('/post/' + this.post.data._id);
+        })
     }
 
     render() {
         return (
             <div>
-                <MyModal ref={(el)=>{this.modal=el;}} type='confirm' modalProps={{
+                {/* <MyModal ref={(el)=>{this.modal = el;}} type='confirm' modalProps={{
                     title:'Delete Post',
                     description:'Do you want to delete the post?',
                     negativeLabel:'Cancel',
@@ -53,8 +69,7 @@ export default class DeletePost extends Component<{
                             }) 
                         }
                     }
-                }}>
-                </MyModal>
+                }}/> */}
             </div>
         )
     }

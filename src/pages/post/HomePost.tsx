@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-import TagInput from '../../components/atoms/form/TagInput';
+import TagInput from '../../components/atoms/tag/MyTagInput';
 import SearchResults from '../../components/templates/SearchResults';
-import { IPost, Post } from '../../rest/data/posts';
-import SearchRESTObject from '../../rest/rest/search.rest.object';
+import { Post } from '../../rest/data/posts';
 import * as CommonUtils from '../../utils/common.utils';
+import * as RestUtils from '../../rest/RestUtils';
 
 export default class HomePost extends Component {
 
     state = {
-        filterLabel:'Latest',
-        tags:[]
+        filterLabel: 'Latest',
+        tags: []
     }
 
-    sr:SearchResults;
+    sr: SearchResults;
 
     render() {
         const LOCATION_DELTA = 0.03625;
@@ -25,9 +25,7 @@ export default class HomePost extends Component {
 
         if (this.state.tags.length > 0) {
             extraQuery = {
-                "content.tags": {
-                    "$in": this.state.tags
-                }
+                "$and": this.state.tags.map(t => { return { "content.tags": t } })
             }
         }
 
@@ -37,23 +35,24 @@ export default class HomePost extends Component {
                 <table>
                     <tr>
                         <td valign="top">
-                        <TagInput id='' type='' label='Please enter the search tags below.' valueChanged={(id, tags) => {
-                            console.log('HomePost', tags);
-                            this.setState({tags});
-                        }} />
-                        </td>
-                        <td  valign="top">
-                        <Button onClick={()=>{this.sr.rerunFilter();}} style={{margin:'40px 10px'}}>Search</Button>
+                            <TagInput id='search' type='' label='Please enter the search tags below.' valueChanged={(id, tags) => {
+                                console.log('HomePost', tags);
+                                this.setState({ tags }, () => {
+                                    this.sr.rerunFilter();
+                                });
+                            }} liveSuggestions={(value, callback) => {
+                                RestUtils.liveTagSuggestions(value, callback);
+                            }} />
                         </td>
                         <td valign="top">
-                        <Button as={Link} to="/post/create"  style={{margin:'40px 10px'}}>Create Post</Button>
+                            <Button as={Link} to="/post/create" style={{ margin: '40px 10px' }}>Create Post</Button>
                         </td>
                     </tr>
                 </table>
                 <br />
-                <SearchResults  ref={(sr)=>{this.sr=sr;}} itemType='post' item={new Post()}
-                    filterSelectionChanged={(label)=>{
-                        this.setState({filterLabel:label});
+                <SearchResults ref={(sr) => { this.sr = sr; }} itemType='post' item={new Post()}
+                    filterSelectionChanged={(label) => {
+                        this.setState({ filterLabel: label });
                     }}
                     runFilter={this.state.filterLabel}
                     quickFilters={[

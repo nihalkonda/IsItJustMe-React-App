@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Comment } from '../../../rest/data/posts';
-import * as Invoker from '../../../utils/factory/invoker';
-import MyRichTextContainer from '../../atoms/MyRichTextContainer';
 import StatsPreview from './StatsPreview';
 import UserProfilePreview from './UserProfilePreview';
 import { Link } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
-import MyCard from '../../atoms/MyCard';
+import { Card, Row, Col } from 'react-bootstrap';
+import * as NkReactLibrary from 'nk-react-library';
+import NkCard from '../../atoms/NkCard';
+import MyValueComponent from '../../atoms/MyValueComponent';
+import { Utils } from 'nk-js-library';
+import MyAddressText from '../../atoms/MyAddressText';
 
 export default class CommentPreview extends Component<{
     comment: Comment
@@ -14,52 +16,33 @@ export default class CommentPreview extends Component<{
     render() {
         const comment: Comment = this.props.comment;
         return (
-            <MyCard isLink to={`/post/${comment.data.postId}/comment/${comment.data._id}`}>
+            <NkCard isLink to={`/post/${comment.data.postId}/comment/${comment.data._id}`} style={{
+                minWidth: '40vw'
+            }}>
                 <Card.Body>
-                    <table {...{ border: 1 }}>
-                        <tr>
-                            <th>
-                                Content
-                        </th>
-                            <td>
-                                <MyRichTextContainer html={comment.data.content} />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Context
-                        </th>
-                            <td>
-                                {comment.data.context}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Created At
-                        </th>
-                            <td>
-                                {comment.data.createdAt}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Stats
-                        </th>
-                            <td>
-                                <StatsPreview type='comment' {...comment.data.stats} />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Author
-                        </th>
-                            <td>
+                    <Row>
+                        <Col xs='auto'>
+                            <MyValueComponent values={[{
+                                singular: 'score',
+                                plural: 'score',
+                                value: comment.data.stats.score,
+                                variant: 0
+                            }]} />
+                        </Col>
+                        <Col>
+                            <Card.Title>
+                                <NkReactLibrary.Components.Commons.NkRichTextContainer html={comment.data.content} />
+                            </Card.Title>
+                            <Card.Text>
+                                {/* <StatsPreview type='post' {...comment.data.stats}/> */}
+                                <p>Location: <MyAddressText location={comment.data.location} /></p>
+                                <p>Created: {Utils.CommonUtils.timeContextualize(new Date(comment.data.createdAt))}</p>
                                 <UserProfilePreview {...comment.data.author} small={true} />
-                            </td>
-                        </tr>
-                    </table>
+                            </Card.Text>
+                        </Col>
+                    </Row>
                 </Card.Body>
-            </MyCard>
+            </NkCard>
         )
     }
 }

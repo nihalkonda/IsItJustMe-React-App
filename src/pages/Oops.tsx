@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class Oops extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Oops, Something went wrong. Please try again.</h1>
-            </div>
-        )
-    }
+export default function Oops() {
+    return (
+        <div>
+            <h1>Oops, Something went wrong. Please try again.</h1>
+        </div>
+    )
 }
